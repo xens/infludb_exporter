@@ -5,6 +5,9 @@ import datetime as dt
 import requests
 
 def get_metrics():
+    """
+    Get metrics from the InfluxDB server's API
+    """
 
     url = "http://server:8086/query?pretty=true"
     payload = {'db': 'database',
