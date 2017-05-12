@@ -1,4 +1,4 @@
-# InfluxDB exporter
+# InfluXtractor
 
 Download records from the InfluxDB API and write the output to a file
 following the line-protocol specifications: https://docs.influxdata.com/influxdb/v1.2/write_protocols/line_protocol_reference/
@@ -7,20 +7,25 @@ following the line-protocol specifications: https://docs.influxdata.com/influxdb
 
 * Can extract all the measurements from a database
 
-# Usage
+# Exporting data
 
 ```
-usage: influxdb_exporter.py [-h] --host HOST --db DB --file FILE
+usage: influxtractor.py [-h] --host HOST --db DB --file FILE
+                            [--timezone TIMEZONE]
 
 optional arguments:
-  -h, --help   show this help message and exit
-  --host HOST  hosts to connect to ex: http://192.168.1.1:8086
-  --db DB      name of the DB to dump
-  --file FILE  name of the file to write the data to
+  -h, --help           show this help message and exit
+  --host HOST          hosts to connect to ex: http://192.168.1.1:8086
+  --db DB              name of the DB to dump
+  --file FILE          name of the file to write the data to
+  --timezone TIMEZONE  timezone to convert the records to: ex +2 for GMT+2
 ```
 
-# Caveats
+# Importing data
 
-Really early-stage for now:
+Curl can be used to upload the extracted data.
 
-* loosing precsion on timestamps, converting from micro to miliseconds
+```curl -XPOST --data-binary @file_in 'http://server/write?db=my_db&precision=ms'```
+
+If you get ```{"error":"timeout"}``` when sending very large file, you'll
+have to cut your file into smaller blocks.
